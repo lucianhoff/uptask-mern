@@ -1,8 +1,8 @@
 import express from 'express';
-
+import checkAuth from "../middleware/checkAuth.js";
 const Router = express.Router();
 
-import { newUser, authenticate, confirmAccount, forgotPassword, forgotPasswordConfirm, newPassword} from '../controllers/UserController.js';
+import { newUser, authenticate, confirmAccount, forgotPassword, forgotPasswordConfirm, newPassword, perfil} from '../controllers/UserController.js';
 
 Router.post('/', newUser);
 
@@ -16,4 +16,6 @@ Router.route('/forgotpassword/:token')
     .get(forgotPasswordConfirm)
     .post(newPassword);
 
+
+Router.get('/perfil', checkAuth, perfil)
 export default Router;
