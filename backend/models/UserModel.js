@@ -7,6 +7,7 @@ const userSchema = mongoose.Schema({
     email: { type: String, trim: true, unique: true, required: true },
     token: { type: String },
     confirmed: { type: Boolean, default: false },
+    image: { type: String, default: "https://upload.wikimedia.org/wikipedia/commons/d/d3/User_Circle.png" },
 }, { timestamps: true });
 
 // hash password before saving

@@ -82,7 +82,7 @@ const editTask = async (req, res) => {
 }
 
 const deleteTask = async (req, res) => {
-    
+
     const { id } = req.params;
 
     const task = await Task.findById(id).populate("project");
