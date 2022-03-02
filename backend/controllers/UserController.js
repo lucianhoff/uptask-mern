@@ -1,6 +1,7 @@
 import User from "../models/UserModel.js";
 import generateToken from "../helpers/generateToken.js";
 import generateJWT from "../helpers/generateJWT.js";
+import { emailRegister, emailForgorPassword } from "../helpers/emails.js"
 
 const newUser = async (req, res) => {
 
@@ -9,15 +10,28 @@ const newUser = async (req, res) => {
     const userExist = await User.findOne({ email });
 
     if (userExist) {
-        const error = new Error("User already exist");
+        const error = new Error("e-mail already in use");
         return res.status(400).json({ msg: error.message });
     }
 
     try {
         const user = new User(req.body)
         user.token = generateToken()
-        const userCreated = await user.save()
-        res.json({ success: true, user: userCreated })
+
+
+        // nodemailer
+        emailRegister({
+            email: user.email,
+            name: user.name,
+            lastname: user.lastname,
+            token: user.token
+        })
+
+
+
+        // end nodemailer
+        await user.save()
+        res.json({ success: true, msg: 'Account created correctly, check your email.' })
     } catch (error) {
         console.log(error)
 
@@ -40,7 +54,7 @@ const authenticate = async (req, res) => {
     // confirmed?
 
     if (!user.confirmed) {
-        const error = new Error("User not confirmed");
+        const error = new Error("Username does not exist");
         return res.status(403).json({ msg: error.message });
     }
 
@@ -55,6 +69,8 @@ const authenticate = async (req, res) => {
             email: user.email,
             token: generateJWT(user._id),
             _id: user._id,
+            confirmed: user.confirmed,
+            msg: "User authenticated"
         })
 
     } else {
@@ -80,8 +96,6 @@ const confirmAccount = async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-
-
 }
 
 const forgotPassword = async (req, res) => {
@@ -97,6 +111,16 @@ const forgotPassword = async (req, res) => {
     try {
         user.token = generateToken()
         await user.save()
+
+        // nodemailer 
+
+        emailForgorPassword({
+            email: user.email,
+            name: user.name,
+            lastname: user.lastname,
+            token: user.token
+        })
+
         res.json({ success: true, msg: "Email sent for reset your password!" })
     } catch (error) {
         console.log(error)
@@ -141,9 +165,9 @@ const newPassword = async (req, res) => {
 }
 
 const perfil = async (req, res) => {
-    const {user} = req
+    const { user } = req
 
-    res.json({user})
+    res.json(user)
 }
 
 export { newUser, authenticate, confirmAccount, forgotPassword, forgotPasswordConfirm, newPassword, perfil }
