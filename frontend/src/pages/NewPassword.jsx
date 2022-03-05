@@ -93,8 +93,6 @@ const NewPassword = () => {
 
     const { token } = useParams()
 
-    console.log(token)
-
     const [validToken, setValidToken] = useState(null)
     const checkToken = async () => {
         try {

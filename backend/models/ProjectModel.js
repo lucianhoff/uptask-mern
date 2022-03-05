@@ -6,6 +6,12 @@ const ProjectSchema = new mongoose.Schema({
     deadline: {type: Date, default: Date.now},
     client: {type: String, trim: true, required: true},
     owner: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+    tasks: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Task"
+        }
+    ],
     collaborators: [
         {
             type: mongoose.Schema.Types.ObjectId, ref: "User"

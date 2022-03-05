@@ -7,7 +7,6 @@ const ConfirmAccount = () => {
 
   const { token } = useParams()
   const [accountConfirmed, setAccountConfirmed] = useState(null)
-  console.log(token);
 
   const ConfirmAccount = async () => {
     try {

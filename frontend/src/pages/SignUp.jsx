@@ -9,7 +9,6 @@ import clientAxios from "../config/clientAxios"
 import useAuth from '../hooks/useAuth'
 
 
-
 const SignUp = () => {
 
     const [name, setName] = useState('')
@@ -67,7 +66,7 @@ const SignUp = () => {
                 email,
                 password
             })
-            console.log(data)
+            // console.log(data)
 
             toast.custom((t) => (
                 <div

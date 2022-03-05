@@ -8,7 +8,9 @@ const newTask = async (req, res) => {
 
     const projectExist = await Project.findById(project);
 
-    console.log(projectExist)
+    // console.log(projectExist)
+
+    // console.log(req.body)
 
     if (!projectExist) {
         const error = new Error("Project not found");
@@ -22,6 +24,13 @@ const newTask = async (req, res) => {
 
     try {
         const taskSaved = await Task.create(req.body);
+
+        // SAVE TASK IN PROJECT
+
+        projectExist.tasks.push(taskSaved._id);
+
+        await projectExist.save();
+
         res.json(taskSaved);
     } catch (error) {
         return res.status(500).json({ msg: error.message });

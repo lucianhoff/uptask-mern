@@ -19,7 +19,7 @@ const newProject = async (req, res) => {
 
 const getProject = async (req, res) => {
     const { id } = req.params
-    const project = await Project.findById(id) || null
+    const project = await Project.findById(id).populate('tasks') || null
 
     // if (project === id) {
         if (!project) {
@@ -37,10 +37,7 @@ const getProject = async (req, res) => {
 
         const task = await Task.find().where('project').equals(project._id)
 
-        res.json({
-            project,
-            task
-        })
+        res.json(project)
     // }
 }
 
@@ -49,7 +46,7 @@ const updateProject = async (req, res) => {
 
     const project = await Project.findById(id)
     console.log(project)
-    if (project === id) {
+    // if (project === id) {
         if (!project) {
             // const error = new Error("Project not found")
             // res.status(404).json({ msg: error.message })
@@ -72,6 +69,7 @@ const updateProject = async (req, res) => {
 
 
         try {
+            console.log('entry en el try')
             const savedProject = await project.save()
             res.json(savedProject)
         } catch (error) {
@@ -79,14 +77,13 @@ const updateProject = async (req, res) => {
         }
     }
 
-}
+// }
 
 const deleteProject = async (req, res) => {
     const { id } = req.params
 
     const project = await Project.findById(id)
-    console.log(project)
-    if (project === id) {
+    // if (project === id) {
         if (!project) {
             // const error = new Error("Project not found")
             // res.status(404).json({ msg: error.message })
@@ -106,7 +103,7 @@ const deleteProject = async (req, res) => {
         } catch (error) {
             console.log(error);
         }
-    }
+    // }
 }
 
 const addCollaborator = async (req, res) => { }

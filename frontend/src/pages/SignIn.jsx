@@ -20,9 +20,7 @@ const SignIn = () => {
         try {
             const { data } = await clientAxios.post(`/users/login`, { email, password })
             localStorage.setItem('token', data.token)
-            console.log(data);
             toast.success(`${data.msg}`)
-            navigate('/')
         } catch (error) {
             if(error.response){
                 toast.error(`${error.response.data.msg}`)
