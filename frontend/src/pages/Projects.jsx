@@ -1,13 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import useProject from '../hooks/useProject'
 
 import PreviewProject from "../components/PreviewProject";
-
 const Projects = () => {
 
   const { projects } = useProject();
-
-  // console.log(projects);
 
   return (
     <>

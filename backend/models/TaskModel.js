@@ -8,7 +8,7 @@ const TaskSchema = new mongoose.Schema({
     deadline: {type: Date, required: true, default: Date.now},
     priority: {type: String, required: true, enum: ["Low", "Medium", "High"]},
     project: {type: mongoose.Schema.Types.ObjectId, ref: "Project"},
-
+    taskManager: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
 
 }, {timestamps: true})
 

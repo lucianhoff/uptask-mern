@@ -8,7 +8,7 @@ import NewPassword from './pages/NewPassword'
 import ConfirmAccount from './pages/ConfirmAccount'
 import NewProject from './pages/NewProject'
 import Project from './pages/Project'
-
+import NewCollab from './pages/NewCollab'
 
 // projetcs
 import PrivateRoute from "./layouts/PrivateRoute"
@@ -36,6 +36,7 @@ function App() {
             <Route path='/projects' element={<PrivateRoute />}>
               <Route index element={<Projects />} />
               <Route path='newproject' element={<NewProject />} />
+              <Route path='newcollaborator/:id' element={<NewCollab />} />
               <Route path=':id' element={<Project />} />
               <Route path='edit/:id' element={<EditProjetc />} />
             </Route>

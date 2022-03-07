@@ -2,7 +2,7 @@ import Project from "../models/ProjectModel.js";
 import Task from "../models/TaskModel.js";
 import generateToken from "../helpers/generateToken.js";
 import generateJWT from "../helpers/generateJWT.js";
-
+// import 
 const newTask = async (req, res) => {
     const { project } = req.body;
 
@@ -107,14 +107,43 @@ const deleteTask = async (req, res) => {
     }
 
     try {
-        const deleteTask = await task.deleteOne();
-        res.json({ success: true, msg: "task deleted", data: deleteTask });
+        const project = await Project.findById(task.project);
+        project.tasks.pull(task._id);
+
+        await Promise.allSettled([project.save(), await task.deleteOne()]);
+
+
+        res.json({ success: true, msg: "task deleted" });
     } catch (error) {
         console.log(error);
     }
 }
 
-const changeState = async (req, res) => { }
+const changeState = async (req, res) => {
+    const { id } = req.params;
+    console.log(id)
+
+    const task = await Task.findById(id).populate("project");
+
+    if (!task) {
+        const error = new Error("Task not found");
+        return res.status(404).json({ msg: error.message });
+    }
+
+    if (task.project.owner.toString() !== req.user._id.toString() && !task.project.collaborators.some(collaborator => collaborator._id.toString() === req.user._id.toString())) {
+        const error = new Error("You are not authorized to change the state of this task");
+        return res.status(401).json({ msg: error.message })
+    }
+
+    task.state = !task.state
+    task.taskManager = req.user._id
+
+    await task.save()
+    const taskUpdate = await Task.findById(id).populate("project").populate("taskManager");
+
+    // console.log(taskUpdate)
+    res.json({ success: true, msg: "task state changed", data: taskUpdate });
+}
 
 export {
     newTask,

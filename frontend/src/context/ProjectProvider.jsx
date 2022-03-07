@@ -1,8 +1,10 @@
 import { useState, useEffect, createContext } from "react";
-
+// import io from 'socket.io-client'
 import clientAxios from "../config/clientAxios";
-
 const ProjectContext = createContext();
+import io from "socket.io-client";
+
+let socket;
 
 const ProjectProvider = ({ children }) => {
 
@@ -12,7 +14,9 @@ const ProjectProvider = ({ children }) => {
     const [modalFormTask, setModalFormTask] = useState(false);
     const [task, setTask] = useState({});
     const [modalDeleteTask, setModalDeleteTask] = useState(false);
-
+    const [collaborator, setCollaborator] = useState({});
+    const [modalDeleteCollaborator, setModalDeleteCollaborator] = useState(false);
+    const [search, setSearch] = useState(false);
 
     useEffect(() => {
         const getProjects = async () => {
@@ -37,6 +41,11 @@ const ProjectProvider = ({ children }) => {
 
         getProjects();
     }, []);
+
+    
+
+
+
 
     const editProjetc = async (project) => {
         console.log('edit project');
@@ -118,7 +127,7 @@ const ProjectProvider = ({ children }) => {
     }
 
     const handleModalTask = () => {
-       
+
         setModalFormTask(!modalFormTask)
         // setTask({})
         setTask({
@@ -143,7 +152,7 @@ const ProjectProvider = ({ children }) => {
                 }
             }
 
-            const {data} = await clientAxios.delete(`/projects/${id}`, config);
+            const { data } = await clientAxios.delete(`/projects/${id}`, config);
             // console.log(data.response)
             const projectsUpdated = projects.filter(proj => proj._id !== id);
             setProjects(projectsUpdated);
@@ -157,7 +166,7 @@ const ProjectProvider = ({ children }) => {
         // console.log(task)
         setModalFormTask(true)
         setTask(task)
-        
+
     }
 
     const newTask = async (task) => {
@@ -173,18 +182,19 @@ const ProjectProvider = ({ children }) => {
             }
             console.log('taskkkkk nuevo')
             const { data } = await clientAxios.post(`/tasks`, task, config);
-            console.log(data)
+            // console.log(data)
 
-            // add task to state
-
-            const projectUpdated = {...project};
-            projectUpdated.tasks = [...project.tasks, data];
-
-            setProject(projectUpdated)
+            
             setModalFormTask(false)
+
+            //SOCKET IO
+
+            socket.emit('nueva tarea', data)
+
+
         } catch (error) {
             console.log(error)
-            
+
         }
     }
 
@@ -206,23 +216,23 @@ const ProjectProvider = ({ children }) => {
 
             // add task to state
 
-            const projectUpdated = {...project};
+            const projectUpdated = { ...project };
             projectUpdated.tasks = projectUpdated.tasks.map(taskState => taskState._id === data.data._id ? data.data : taskState);
             setProject(projectUpdated)
             setModalFormTask(false)
         } catch (error) {
             console.log(error)
         }
-    }    
-    
+    }
+
     const submitTask = async (task) => {
         // return console.log(task)
-        if(task?.id){
+        if (task?.id) {
             editTask(task)
         } else {
             await newTask(task)
         }
-        
+
     }
 
 
@@ -252,7 +262,7 @@ const ProjectProvider = ({ children }) => {
 
             // add task to state
 
-            const projectUpdated = {...project};
+            const projectUpdated = { ...project };
 
             projectUpdated.tasks = projectUpdated.tasks.filter(taskState => taskState._id !== task._id);
             // await 
@@ -269,6 +279,147 @@ const ProjectProvider = ({ children }) => {
         }
     }
 
+
+    // COLLABORATORS
+
+    const submitCollaborator = async (email) => {
+
+        console.log(email)
+
+        // TODO: PONER QUE CARGA
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            // console.log('data')
+            const { data } = await clientAxios.post(`/projects/collaborators`, { email }, config);
+            setCollaborator(data)
+            alert('Colaborador encontrado')
+        } catch (error) {
+            console.log(error)
+
+            alert('Error al buscar el colaborador')
+        }
+        // TODO: SACAR QUE CARGA CON FINALLY
+    }
+
+    const addCollaborator = async (email) => {
+        // console.log(email)
+
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            // console.log('data')
+            const { data } = await clientAxios.post(`/projects/collaborators/${project._id}`, email, config);
+            alert(data.msg)
+            console.log(data)
+
+            setCollaborator({})
+        } catch (error) {
+
+            console.log(error)
+            console.log(error.response.data.msg)
+            alert(error.response.data.msg)
+
+        }
+
+        // console.log(req.body)
+    }
+
+    const handleDeleteCollaborator = async (collaborator) => {
+        // console.log(collaborator)
+        setModalDeleteCollaborator(!modalDeleteCollaborator)
+        setCollaborator(collaborator)
+    }
+
+    const deleteCollaborator = async () => {
+        // console.log(collaborator)
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            // console.log('data')
+
+            const { data } = await clientAxios.post(`/projects/remove-collaborator/${project._id}`, { id: collaborator._id }, config);
+            console.log(data)
+
+            const projectUpdate = { ...project };
+
+            projectUpdate.collaborators = projectUpdate.collaborators.filter(collaboratorState => collaboratorState._id !== collaborator._id);
+
+            setProject(projectUpdate)
+
+            // alert(data.msg)
+            setCollaborator({})
+            setModalDeleteCollaborator(!modalDeleteCollaborator)
+
+        } catch (error) {
+            console.log(error)
+            console.log(error.response)
+        }
+    }
+
+    const taskDone = async task => {
+        // console.log('task', task)
+
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await clientAxios.post(`/tasks/state/${task._id}`, {}, config);
+
+            // console.log(data)
+
+            const projectUpdate = { ...project };
+
+            projectUpdate.tasks = projectUpdate.tasks.map(taskState => taskState._id === task._id ? data.data : taskState);
+
+            setProject(projectUpdate)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleSearch = async (e) => {
+        setSearch(!search)
+    }
+
+    // SOCKET IO FUNCTIONS
+
+    const submitTasksProject = (task) => {
+        // add task to state
+        console.log('provider task', task)
+        const projectUpdated = { ...project };
+        projectUpdated.tasks = [...projectUpdated.tasks, task];
+        setProject(projectUpdated)
+    }
+    
     return (
         <ProjectContext.Provider
             value={{
@@ -286,8 +437,20 @@ const ProjectProvider = ({ children }) => {
                 task,
                 handleDeleteTask,
                 modalDeleteTask,
-                deleteTask
-                
+                deleteTask,
+                submitCollaborator,
+                collaborator,
+                addCollaborator,
+                handleDeleteCollaborator,
+                modalDeleteCollaborator,
+                deleteCollaborator,
+                taskDone,
+                handleSearch,
+                search,
+                submitTasksProject
+
+                // setModalDeleteCollaborator,
+
             }}
         >
             {children}

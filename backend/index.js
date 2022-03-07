@@ -15,21 +15,22 @@ db();
 
 // cors
 
-// const whitelist = [process.env.FRONTEND_URL];
+const whitelist = [process.env.FRONTEND_URL];
 
-// const corsOptions = {
-//     origin: function (origin, callback) {
-//         if (whitelist.indexOf(origin)) {
-//             callback(null, true);
-//         } else {
-//             callback(new Error("Not allowed by CORS"));
-//         }
-//     }
-// }
+const corsOptions = {
+    // origin: function (origin, callback) {
+    //     if (whitelist.indexOf(origin)) {
+    //         callback(null, true);
+    //     } else {
+    //         callback(new Error("Not allowed by CORS"));
+    //     }
+    // }
+    origin: process.env.FRONTEND_URL
+}
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
-app.use(cors());
+// app.use(cors());
 
 // Routing
 app.use('/api/users', userRoutes)
@@ -39,5 +40,37 @@ app.use('/api/tasks', taskRoutes)
 const PORT = process.env.PORT || 4000
 app.use(express.json());
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))
+const sv = app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))
 
+// SOCKET IO
+
+import { Server } from "socket.io";
+
+const io = new Server(sv, {
+    pingTimeout: 60000,
+    cors : {
+        origin: process.env.FRONTEND_URL
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+});
+
+io.on('connection', (socket) => {
+    console.log('Conectado a socket.io')
+
+    // socket.on('open project', (projectID) => {
+        // console.log('Desde el backkkk', projectID)
+        // socket.join(projectID)
+    // })
+
+    socket.on('nueva tarea', (tarea) => {
+
+        console.log(tarea)
+        console.log(tarea.project)
+        const project = tarea.project
+
+        // socket.on(tarea.project).emit('agregar tarea', addtask)
+        // const task = tarea
+        socket.on(project).emit('sv:tarea agregada', task)
+    })
+
+})

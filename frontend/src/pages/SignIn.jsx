@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import axios from 'axios'
 import clientAxios from '../config/clientAxios'
 

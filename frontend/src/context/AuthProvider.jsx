@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
             try {
                 const {data} = await clientAxios('/users/perfil', config)  // default method is get
                 setAuth(data)
-                navigate('/projects')
+                // navigate('/projects')
             } catch (error) {
                 setAuth({})
                 console.log(error)
