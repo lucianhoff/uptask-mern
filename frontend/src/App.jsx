@@ -15,16 +15,19 @@ import PrivateRoute from "./layouts/PrivateRoute"
 import Projects from './pages/Projects'
 
 import { AuthProvider } from './context/AuthProvider'
-
 import { ProjectProvider } from './context/ProjectProvider'
 import EditProjetc from './pages/EditProjetc'
+import Home from "./pages/Home"
+import Nav from "./components/Nav"
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <ProjectProvider>
+          {/* {<Nav />} */}
           <Routes>
+            
             <Route path="/" element={<AuthLayout />} >
               <Route index element={<SignIn />} />
               <Route path="register" element={<SignUp />} />

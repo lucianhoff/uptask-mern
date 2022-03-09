@@ -42,8 +42,13 @@ const ProjectProvider = ({ children }) => {
         getProjects();
     }, []);
 
-    
+    useEffect(() => {
+        // socket = io(import.meta.env.VITE_BACKEND_URL);
+    }, []);
 
+    // useEffect(() => {
+        
+    // });
 
 
 
@@ -182,15 +187,16 @@ const ProjectProvider = ({ children }) => {
             }
             console.log('taskkkkk nuevo')
             const { data } = await clientAxios.post(`/tasks`, task, config);
-            // console.log(data)
+            console.log(data)
 
-            
+            const projectUpdated = { ...project };
+            projectUpdated.tasks = [...projectUpdated.tasks, data];
+            setProject(projectUpdated)
             setModalFormTask(false)
 
             //SOCKET IO
 
-            socket.emit('nueva tarea', data)
-
+            // socket.emit('nueva tarea', data)
 
         } catch (error) {
             console.log(error)

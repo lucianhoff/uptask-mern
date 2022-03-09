@@ -28,9 +28,9 @@ const corsOptions = {
     origin: process.env.FRONTEND_URL
 }
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
-// app.use(cors());
+app.use(cors());
 
 // Routing
 app.use('/api/users', userRoutes)
@@ -46,31 +46,24 @@ const sv = app.listen(PORT, () => console.log(`Server listening on port ${PORT}!
 
 import { Server } from "socket.io";
 
-const io = new Server(sv, {
-    pingTimeout: 60000,
-    cors : {
-        origin: process.env.FRONTEND_URL
-    },
-    methods: ["GET", "POST", "PUT", "DELETE"],
-});
+// const io = new Server(sv, {
+//     pingTimeout: 60000,
+//     cors : {
+//         origin: process.env.FRONTEND_URL
+//     },
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+// });
 
-io.on('connection', (socket) => {
-    console.log('Conectado a socket.io')
+// io.on('connection', (socket) => {
+//     console.log('Conectado a socket.io')
 
-    // socket.on('open project', (projectID) => {
-        // console.log('Desde el backkkk', projectID)
-        // socket.join(projectID)
-    // })
+//     socket.on('nueva tarea', (tarea) => {
+//         console.log('Nueva tarea', tarea)
+        
+//         // enviar tarea al frontend 
 
-    socket.on('nueva tarea', (tarea) => {
+//         socket.on(tarea.project).emit('tarea agreada', tarea)
 
-        console.log(tarea)
-        console.log(tarea.project)
-        const project = tarea.project
+//     })
 
-        // socket.on(tarea.project).emit('agregar tarea', addtask)
-        // const task = tarea
-        socket.on(project).emit('sv:tarea agregada', task)
-    })
-
-})
+// })

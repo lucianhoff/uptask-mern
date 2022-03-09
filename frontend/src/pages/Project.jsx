@@ -25,26 +25,14 @@ const Project = () => {
     }, [])
 
     useEffect(() => {
-        socket = io(import.meta.env.VITE_BACKEND_URL);
-
-        socket.emit('open project', id)
+        // socket = io(import.meta.env.VITE_BACKEND_URL);
     }, [])
 
 
     useEffect(() => {
-        // socket.on('tarea agregada', tareaNueva => {
-        //     console.log('socketeeee')
-        //     console.log(tareaNueva)
+        // socket.on('tarea agreada', tareanueva => {
+        //     console.log(tareanueva)
         // })
-
-        // listening socket io with tarea agregada
-
-        socket.on('tarea agregada', tareaNueva => {
-            console.log('socketeeee')
-            console.log(tareaNueva)
-            // project.tasks.push(tareaNueva)
-        }
-        )
     })
 
     // console.log(project)
