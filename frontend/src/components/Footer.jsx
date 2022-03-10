@@ -3,8 +3,8 @@ function Footer() {
     const year = new Date().getFullYear();
 
     return (
-        <div className=" bg-gray-100">
-            <div className="w-full border-gray-100 border-t lg:w-11/12 md:w-11/12 lg:mx-auto md:mx-auto">
+        <div className="">
+            <div className="w-full border-gray-300 border-t-2 lg:w-11/12 md:w-11/12 lg:mx-auto md:mx-auto">
                 <div className="container mx-auto py-6">
                     <div className="xl:flex lg:flex md:flex pt-6">
                         <div className="w-11/12 xl:w-3/6 lg:w-2/5 mx-auto lg:mx-0 xl:mx-0">

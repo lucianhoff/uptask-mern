@@ -60,7 +60,7 @@ const ConfirmAccount = () => {
           'aria-live': 'polite',
         },
       });
-      setTimeout(() => { window.location.href = '/register' }, 5000)
+      setTimeout(() => { window.location.href = '/signup' }, 5000)
     }
   }
 
@@ -95,7 +95,7 @@ const ConfirmAccount = () => {
               Your account has not been confirmed
             </h2>
 
-            <Link to="/register"
+            <Link to="/signup"
               className="block text-center my-5 uppercase text-gray-700 text-sm font-bold lg:mb-0 hover:text-gray-900"
             >
               SignUp!

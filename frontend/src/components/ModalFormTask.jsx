@@ -139,7 +139,7 @@ const ModalFormTask = () => {
                                                     id='taskName'
                                                     type='text'
                                                     placeholder='Task name'
-                                                    className='border-2 border-purple-600 w-full p-2 mt-2 placeholder-gray-500 rounded-md focus:border-purple-700'
+                                                    className='border-2 border-indigo-200 w-full p-2 mt-2 placeholder-gray-500 rounded-md focus:border-purple-700'
                                                     value={taskName}
                                                     onChange={(e) => setTaskName(e.target.value)}
                                                 />
@@ -157,7 +157,7 @@ const ModalFormTask = () => {
                                                     id='taskDescription'
                                                     type='text'
                                                     placeholder='Task Description'
-                                                    className='border-2 border-purple-600 w-full p-2 mt-2 placeholder-gray-500 rounded-md focus:border-purple-700'
+                                                    className='border-2 border-indigo-200 w-full p-2 mt-2 placeholder-gray-500 rounded-md focus:border-purple-700'
                                                     value={taskDescription}
                                                     onChange={(e) => setTaskDescription(e.target.value)}
                                                 />
@@ -174,7 +174,7 @@ const ModalFormTask = () => {
                                                 <input
                                                     id='taskDeadline'
                                                     type='date'
-                                                    className='border-2 border-purple-600 w-full p-2 mt-2 placeholder-gray-500 rounded-md focus:border-purple-700'
+                                                    className='border-2 border-indigo-200 w-full p-2 mt-2 placeholder-gray-500 rounded-md focus:border-purple-700'
                                                     value={taskDeadline}
                                                     onChange={(e) => setTaskDeadline(e.target.value)}
                                                 />
@@ -191,7 +191,7 @@ const ModalFormTask = () => {
 
                                                 <select
                                                     id='taskPriority'
-                                                    className='border-2 border-purple-600 w-full p-2 mt-2 placeholder-gray-500 rounded-md focus:border-purple-700'
+                                                    className='border-2 border-indigo-200 w-full p-2 mt-2 placeholder-gray-500 rounded-md focus:border-purple-700'
                                                     value={taskPriority}
                                                     onChange={(e) => setTaskPriority(e.target.value)}
                                                 // defaultValue='Select Priority'
@@ -207,7 +207,7 @@ const ModalFormTask = () => {
                                             </div>
 
                                             <input
-                                                className='p-3 text-white w-full bg-purple-600 rounded-md mt-5 cursor-pointer transition-colors duration-200 hover:bg-purple-700'
+                                                className='p-3 text-white w-full bg-indigo-600 rounded-md mt-5 cursor-pointer transition-colors duration-200 hover:bg-purple-700'
                                                 type='submit'
                                                 value={taskId ? "Edit Task" : "New Task"}
                                             />

@@ -10,7 +10,7 @@ const getAllProjects = async (req, res) => {
             { collaborators: { $in: req.user._id } },
             { owner: { $in: req.user._id } }
         ]
-    }).select('-tasks -collaborators')
+    }).populate("tasks")
     res.json(projects)
 }
 

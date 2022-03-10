@@ -20,9 +20,9 @@ const PrivateRoute = () => {
                 <div className='bg-gray-500'>
                     <Header />
 
-                    <div className='md:flex md:min-h-screen'>
-                        <Sidebar />
-                        <main className='p-10 flex-1 bg-purple-400'>
+                    <div className='md:flex md:min-h-screen bg-indigo-700'>
+                        {/* <Sidebar /> */}
+                        <main className='p-10 flex-1'>
                             <Outlet />
                         </main>
                     </div>

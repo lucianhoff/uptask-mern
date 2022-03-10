@@ -120,7 +120,7 @@ const ForgotPassword = () => {
                 >
                     have account yet? Sign In!
                 </Link>
-                <Link to="/register"
+                <Link to="/signup"
                     className="block text-center my-5 uppercase text-gray-700 text-sm font-bold lg:mb-0 hover:text-gray-900"
                 >
                     No have account yet? Sign Up!

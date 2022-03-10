@@ -10,7 +10,7 @@ function Home() {
     return (
         <>
           
-            <div className="pt-12 bg-gray-100 overflow-y-hidden">
+            <div className="pt-12 overflow-y-hidden">
                 {/* Code block starts */}
                 <>
                     <div className="w-full px-6">
@@ -38,7 +38,7 @@ function Home() {
                 {/* <Testimonials /> */}
                 <TestimonialsCard/> 
             </div>
-            {/* <Footer /> */}
+            <Footer />
         </>
     );
 }

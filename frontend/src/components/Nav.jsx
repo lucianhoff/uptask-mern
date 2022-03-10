@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom"
+import useAuth from '../hooks/useAuth';
 const Nav = () => {
+    const { auth } = useAuth()
+
     const [show, setShow] = useState(false);
+
+    // if(!auth._id) return
     return (
-        <nav className="w-full py-5 bg-gray-100 md:py-0">
+        !auth._id ? <nav className="w-full py-5 bg-gray-100 md:py-0">
             <div className="container mx-auto px-6 flex items-center justify-between">
                 <div className="flex items-center" aria-label="Home" role="img">
                     <img className="cursor-pointer w-8 sm:w-auto" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/center_aligned_with_image-svg1.svg" alt="logo" />
@@ -54,7 +59,7 @@ const Nav = () => {
                     </div>
                 </div>
             </div>
-        </nav>
+        </nav> : null
     )
 }
 

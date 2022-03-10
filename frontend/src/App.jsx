@@ -19,18 +19,19 @@ import { ProjectProvider } from './context/ProjectProvider'
 import EditProjetc from './pages/EditProjetc'
 import Home from "./pages/Home"
 import Nav from "./components/Nav"
-
 function App() {
+  
   return (
     <BrowserRouter>
       <AuthProvider>
         <ProjectProvider>
-          {/* {<Nav />} */}
+          <Nav />
           <Routes>
-            
+
             <Route path="/" element={<AuthLayout />} >
-              <Route index element={<SignIn />} />
-              <Route path="register" element={<SignUp />} />
+              <Route index element={<Home />} />
+              <Route path="signin" element={<SignIn />} />
+              <Route path="signup" element={<SignUp />} />
               <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="forgot-password/:token" element={<NewPassword />} />
               <Route path="confirm-account/:token" element={<ConfirmAccount />} />
